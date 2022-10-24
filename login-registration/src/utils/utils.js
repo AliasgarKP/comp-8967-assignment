@@ -29,7 +29,7 @@ export const setActive = async (taskId) => {
         console.log('Change to active request completed', json);
 
         if (json.statusCode === 200) {
-            return json.body;
+            return json.data;
         }
     } catch (err) {
         console.error('Error while performing change to Active.', err);
@@ -100,7 +100,7 @@ export const setCompleted = async (taskId) => {
         console.log('Change to complete request completed', json);
 
         if (json.statusCode === 200) {
-            return json.body;
+            return json.data;
         }
     } catch (err) {
         console.error('Error while performing change to Completed.', err);
@@ -134,7 +134,7 @@ export const removeTask = async (taskId) => {
         console.log('Remove Task request completed', json);
 
         if (json.statusCode === 200) {
-            return json.body;
+            return json.data;
         }
     } catch (err) {
         console.error('Error while removing task.', err);
@@ -142,8 +142,8 @@ export const removeTask = async (taskId) => {
     return null;
 }
 
-export const deleteAllCompleted = async (taskId) => {
-    console.log("In setCompleted function")
+export const deleteAllCompleted = async () => {
+    console.log("In deleteALlCompleted function")
     const requestBody = {
         'token': TOKEN,
     };
@@ -167,10 +167,46 @@ export const deleteAllCompleted = async (taskId) => {
         console.log('Delete all completed tasks request completed', json);
 
         if (json.statusCode === 200) {
-            return json.body;
+            return json.data;
         }
     } catch (err) {
         console.error('Error while deleting all completed.', err);
+    }
+    return null;
+}
+
+export const addTask = async (name,description,storyPoints) => {
+    console.log("In addTask function")
+    const requestBody = {
+        'task_name' : name, 
+        'task_description' : description, 
+        'story_points' : storyPoints,
+        'token': TOKEN,
+    };
+
+    console.log('stringified request: ', JSON.stringify(requestBody));
+
+    const options = {
+        method: "POST",
+        crossDomain: true,
+        headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+            "Access-Control-Allow-Origin": "*",
+        },
+        body: JSON.stringify(requestBody)
+    };
+
+    try {
+        let response = await fetch(API_URL + "addTask", options);
+        let json = await response.json();
+        console.log('Added a new task', json);
+
+        if (json.statusCode === 200) {
+            return json.data;
+        }
+    } catch (err) {
+        console.error('Error while adding new task.', err);
     }
     return null;
 }
