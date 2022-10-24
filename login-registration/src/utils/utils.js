@@ -1,4 +1,5 @@
-let API_URL = "http://192.168.0.208:3000/"
+
+let API_URL = "http://localhost:12230/"
 // let TOKEN = window.localStorage.getItem("token")
 let TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImtzaGl0aWpAcGFuZHUucGFuZCIsImlhdCI6MTY2NjU4MTc4N30.sgc_NSNrVCsBkZMP1sYJBTQZUDoOjuKLUMSpCbCfbC0"
 
@@ -31,8 +32,145 @@ export const setActive = async (taskId) => {
             return json.body;
         }
     } catch (err) {
-        console.error('Error while retrieving login details.', err);
+        console.error('Error while performing change to Active.', err);
     }
     return null;
 }
 
+
+export const getAllTasks = async () => {
+
+    console.log("In getAllTasks function")
+    const requestBody = {
+        'token': TOKEN,
+    };
+
+    console.log('stringified request: ', JSON.stringify(requestBody));
+
+    const options = {
+        method: "POST",
+        crossDomain: true,
+        headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+            "Access-Control-Allow-Origin": "*",
+        },
+        body: JSON.stringify(requestBody)
+    }; 
+
+    try {
+        let response = await fetch(API_URL + "getTasks", options);
+        let json = await response.json();
+        console.log("Prinitng from getAllTasks \n" , json)
+        console.log('printing json body', json.data);
+        // return json;
+        if (json.status === "ok") {
+            return json.data;
+        }
+    } catch (err) {
+        console.error('Error while getting all tasks.', err);
+    }
+    return null;
+
+}
+
+export const setCompleted = async (taskId) => {
+    console.log("In setCompleted function")
+    const requestBody = {
+        'task_id': taskId,
+        'token': TOKEN,
+    };
+
+    console.log('stringified request: ', JSON.stringify(requestBody));
+
+    const options = {
+        method: "POST",
+        crossDomain: true,
+        headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+            "Access-Control-Allow-Origin": "*",
+        },
+        body: JSON.stringify(requestBody)
+    };
+
+    try {
+        let response = await fetch(API_URL + "completeTask", options);
+        let json = await response.json();
+        console.log('Change to complete request completed', json);
+
+        if (json.statusCode === 200) {
+            return json.body;
+        }
+    } catch (err) {
+        console.error('Error while performing change to Completed.', err);
+    }
+    return null;
+}
+
+export const removeTask = async (taskId) => {
+    console.log("In setCompleted function")
+    const requestBody = {
+        'task_id': taskId,
+        'token': TOKEN,
+    };
+
+    console.log('stringified request: ', JSON.stringify(requestBody));
+
+    const options = {
+        method: "POST",
+        crossDomain: true,
+        headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+            "Access-Control-Allow-Origin": "*",
+        },
+        body: JSON.stringify(requestBody)
+    };
+
+    try {
+        let response = await fetch(API_URL + "deleteTask", options);
+        let json = await response.json();
+        console.log('Remove Task request completed', json);
+
+        if (json.statusCode === 200) {
+            return json.body;
+        }
+    } catch (err) {
+        console.error('Error while removing task.', err);
+    }
+    return null;
+}
+
+export const deleteAllCompleted = async (taskId) => {
+    console.log("In setCompleted function")
+    const requestBody = {
+        'token': TOKEN,
+    };
+
+    console.log('stringified request: ', JSON.stringify(requestBody));
+
+    const options = {
+        method: "POST",
+        crossDomain: true,
+        headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+            "Access-Control-Allow-Origin": "*",
+        },
+        body: JSON.stringify(requestBody)
+    };
+
+    try {
+        let response = await fetch(API_URL + "deleteAllTasks", options);
+        let json = await response.json();
+        console.log('Delete all completed tasks request completed', json);
+
+        if (json.statusCode === 200) {
+            return json.body;
+        }
+    } catch (err) {
+        console.error('Error while deleting all completed.', err);
+    }
+    return null;
+}

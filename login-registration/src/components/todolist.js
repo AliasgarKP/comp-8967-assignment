@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 
+import { setActive, getAllTasks, setCompleted, removeTask, deleteAllCompleted } from "../utils/utils";
+
 //  let data = [
 //     // { name: "Anom", age: 19, gender: "Male" },
 //     // { name: "Megha", age: 19, gender: "Female" },
@@ -15,13 +17,23 @@ export default class TodoList extends Component {
             data: []
         };
 
+        this.displayAll = this.displayAll.bind(this)
+        this.displayActive = this.displayActive.bind(this)
+        this.displayCompleted = this.displayCompleted.bind(this)
+        this.removeCompleted = this.removeCompleted.bind(this)
+        this.search = this.search.bind(this)
+        this.updateStatus = this.updateStatus.bind(this)
+        
+
     }
-    componentDidMount() {
+    async componentDidMount() {
+
+        let data = await getAllTasks()
+
+        console.log("printing data\n", data.allTasks)
+
         this.setState({
-            data: [
-                { id: "1", name: "AD", status: "active" },
-                { id: "2", name: "DS", status: "completed" },
-            ]
+            data: data.allTasks
         })
 
         // fetch("http://localhost:12230/userData", {
@@ -73,23 +85,67 @@ export default class TodoList extends Component {
     //       });
     //   }
 
-    displayAll() {
-        console.log("All")
+    async displayAll() {
+        console.log("Getting all tasks")
+
+        let responseData = await getAllTasks()
+
+        console.log("printing data\n", responseData.allTasks)
+
         this.setState({
-            currentDisplay: 'all',
-            addTaskPopup: true
-        });
+            data: responseData.allTasks
+        })
 
     }
 
-    displayActive() {
+    async displayActive() {
         console.log("Active")
-        this.setState({ currentDisplay: 'active' });
+        // this.setState({ currentDisplay: 'active' });
+        let responseData = await getAllTasks()
+
+        console.log("printing data from display \n", responseData.allTasks)
+
+        this.setState({
+            data: responseData.activeTasks
+        })
     }
 
-    displayCompleted() {
+    async displayCompleted() {
         console.log("Completed")
-        this.setState({ currentDisplay: 'completed' });
+        // this.setState({ currentDisplay: 'completed' });
+
+        let responseData = await getAllTasks()
+
+        console.log("printing data\n", responseData.completedTasks)
+
+        this.setState({
+            data: responseData.completedTasks
+        })
+    }
+
+    async removeAllCompleted() {
+        console.log("Removing all completed")
+        let responseData = await deleteAllCompleted()
+        this.displayAll()
+    }
+
+    async updateStatus(task,action) {
+        console.log("CurrentStatus: ",task.task_status)
+        console.log("action: ",action)
+
+        if(action == "complete"){
+            let response = await setCompleted(task.task_id)
+        }
+        else if (action == "active"){
+            let response = await setActive(task.task_id)
+        }
+        else if (action == "remove"){
+            let response = await removeTask(task.task_id)
+        }
+        this.displayAll()
+
+        //call api to make changes
+        //call api that returns all task
     }
 
     removeCompleted() {
@@ -102,12 +158,7 @@ export default class TodoList extends Component {
         this.setState({ currentDisplay: 'completed' });
     }
 
-    updateStatus = (currentState,action) => {
-        console.log("CurrentStatus: ",currentState)
-        console.log("action: ",action)
-        //call api to make changes
-        //call api that returns all task
-    }
+    
     render() {
 
         // debugger;
@@ -124,7 +175,7 @@ export default class TodoList extends Component {
                     />
                     <button type="button" class="btn btn-success btn-lg button_d" onClick={this.search}>Search</button>
                     <button type="button" class="btn btn-success btn-lg button_d" onClick={this.displayAll}>Add task</button>
-                    <button type="button" class="btn btn-danger btn-lg button_d" onClick={this.removeCompleted}>Remove All Completed</button>
+                    <button type="button" class="btn btn-danger btn-lg button_d" onClick={this.removeAllCompleted}>Remove All Completed</button>
                     {/* </form> */}
                 </div>
 
@@ -144,18 +195,18 @@ export default class TodoList extends Component {
                     {this.state.data.map((val, key) => {
                         return (
                             <tr key={key} className="tableFields">
-                                <td className="tableFields">{val.id}</td>
-                                <td className="tableFields">{val.name}</td>
-                                <td className="tableFields">{val.status}</td>
-                                <td className="tableFields">{val.status === "completed"
+                                <td className="tableFields">{val.task_id}</td>
+                                <td className="tableFields">{val.task_name}</td>
+                                <td className="tableFields">{val.task_status}</td>
+                                <td className="tableFields">{val.task_status === "Complete"
                                     ? <>
                                         <button type="button" class="btn btn-success btn-lg button_d" onClick={this.displayCompleted}>View</button>
-                                        <button type="button" class="btn btn-success btn-lg button_d" onClick={() => this.updateStatus(val.status,"active")}>Active</button>
-                                        <button type="button" class="btn btn-danger btn-lg button_d">Remove</button>
+                                        <button type="button" class="btn btn-success btn-lg button_d" onClick={() => this.updateStatus(val,"active")}>Active</button>
+                                        <button type="button" class="btn btn-danger btn-lg button_d" onClick={() => this.updateStatus(val,"remove")}>Remove</button>
                                     </>
                                     : <>
                                         <button type="button" class="btn btn-success btn-lg button_d">View</button>
-                                        <button type="button" class="btn btn-success btn-lg button_d">Complete</button>
+                                        <button type="button" class="btn btn-success btn-lg button_d" onClick={() => this.updateStatus(val,"complete")}>Complete</button>
                                     </>
 
                                 }</td>
