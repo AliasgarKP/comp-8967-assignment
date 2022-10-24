@@ -1,7 +1,7 @@
 
 let API_URL = "http://localhost:12230/"
-// let TOKEN = window.localStorage.getItem("token")
-let TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImtzaGl0aWpAcGFuZHUucGFuZCIsImlhdCI6MTY2NjU4MTc4N30.sgc_NSNrVCsBkZMP1sYJBTQZUDoOjuKLUMSpCbCfbC0"
+let TOKEN = window.localStorage.getItem("token")
+// let TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImtzaGl0aWpAcGFuZHUucGFuZCIsImlhdCI6MTY2NjU4MTc4N30.sgc_NSNrVCsBkZMP1sYJBTQZUDoOjuKLUMSpCbCfbC0"
 
 export const setActive = async (taskId) => {
     console.log("In SetActive function")
