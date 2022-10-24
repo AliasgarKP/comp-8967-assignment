@@ -29,61 +29,9 @@ export default class TodoList extends Component {
             data: data.allTasks
         })
 
-        // fetch("http://localhost:12230/userData", {
-        //   method: "POST",
-        //   crossDomain: true,
-        //   headers: {
-        //     "Content-Type": "application/json",
-        //     Accept: "application/json",
-        //     "Access-Control-Allow-Origin": "*",
-        //   },
-        //   body: JSON.stringify({
-        //     token: window.localStorage.getItem("token"),
-        //   }),
-        // })
-        //   .then((res) => res.json())
-        //   .then((data) => {
-        //     if(data.status == "error"){
-        //       window.location.href = ".";
-        //     }
-        //     this.setState({ name: data.data.name });
-        //     this.setState({ phoneNumber: data.data.phoneNumber });
-        //     this.setState({ email: data.data.email });
-        //     this.setState({ bio: data.data.bio });
-        //     this.setState({ password: data.data.password });
-        //   });
+        
     }
-    //   handleSubmit(e) {
-    //     e.preventDefault();
-    //     const { name, email, password, bio, phoneNumber } = this.state;
-    //     fetch("http://localhost:12230/edit-details", {
-    //       method: "POST",
-    //       crossDomain: true,
-    //       headers: {
-    //         "Content-Type": "application/json",
-    //         Accept: "application/json",
-    //         "Access-Control-Allow-Origin": "*",
-    //       },
-    //       body: JSON.stringify({
-    //         name,
-    //         email,
-    //         password,
-    //         bio,
-    //         phoneNumber
-    //       }),
-    //     })
-    //       .then((res) => res.json())
-    //       .then((data) => {
-    //         console.log(data, "Details Edited");
-    //       });
-    //   }
-
-    // async displayAll() {
-    //     console.log("Getting all tasks")
-
-    //     let responseData = await getAllTasks()
-
-    //     console.log("printing data\n", responseData.allTasks)
+    
 
 
     async displayAll() {
